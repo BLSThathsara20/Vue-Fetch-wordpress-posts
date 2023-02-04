@@ -1,9 +1,15 @@
 <template>
   <div>
+    <span v-if="posts" class="warning">! Please add only wordpress site url</span>
     <input type="text" v-model="wpUrl">
-    <p v-if="wpUrl"><span>EndPoint: </span> <span class="endpoint">{{wpUrl + "/wp-json/wp/v2/posts"}}</span></p>
-    <button @click="validateUrl" v-if="wpUrl">Validate URL</button>
-    <span v-if="wpUrl">You can click these previous urls</span>
+    <div class="errors">
+      <p v-if="posts.length === 0 && wpUrl" >No posts in this URL</p>
+    <span class="add-url" v-if="!wpUrl">Please add URL</span>
+    <span v-if="errorMessage">{{ errorMessage }}</span>
+    </div>
+    <p class="endpoint para" v-if="wpUrl"><span>EndPoint: </span> <span class="endpoint">{{wpUrl + "/wp-json/wp/v2/posts"}}</span></p>
+    <button class="validate" @click="validateUrl" v-if="wpUrl">Validate URL</button>
+    
     <div v-if="!wpUrl" class="example">
       <span class="example-url" @click="updateInputValue">Add Exmple URL</span>
     </div>
@@ -14,13 +20,12 @@
         <a @click="fetchPosts(historyUrl)">{{ historyUrl }}</a>
       </li>
     </ul>
+    <span class="previous-urls" v-if="wpUrl">You can click these previous urls</span>
     </div>
-    <ul v-for="post in posts" v-bind:key="post.id">
-      <li>{{ post.title.rendered }}</li>
+    <h4 v-if="posts">Post Titles</h4>
+    <ul class="posts" v-for="post in posts" v-bind:key="post.id">
+      <li><a href="{{ post.link }}">{{ post.title.rendered }}</a> <span>{{ post.content.rendered }}</span></li>
     </ul>
-    <p v-if="posts.length === 0 && wpUrl" >No posts in this URL</p>
-    <span v-if="!wpUrl">Please add URL</span>
-    <span v-if="errorMessage">{{ errorMessage }}</span>
     <br>
     <br>
   </div>
@@ -107,6 +112,67 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
+
+.errors{
+  padding-top: 10px;
+  p,span{
+    font-size: 13px;
+    color: #ff0000;
+
+    &.add-url{
+      color: #0048ff;
+      }
+  }
+}
+
+.posts{
+  text-align: left;
+  li{
+    a{
+      font-size: 16px;
+      color: #373737;
+    }
+    span{
+      font-size: 12px;
+      color: #00000081;
+      display: block;
+      padding-top: 8px;
+      padding-bottom: 12px;
+
+    }
+  }
+}
+.previous-urls{
+  font-size: 12px;
+  background-color: #00b7ff2d;
+  border-radius: 18px;
+  padding: 4px 15px;
+  color: #003df4
+}
+.validate{
+  padding: 8px 25px;
+  border: none;
+  background-color: #ff6a00;
+  border-radius: 18px;
+  color: #fff;
+  cursor: pointer;
+  display: block;
+  max-width: none;
+  margin: 10px auto;
+}
+.bind-url{
+  font-size: 14px;
+  text-decoration: dashed;
+}
+.warning{
+  display: block;
+  margin-bottom: 15px;
+  font-size: 12px;
+  color: #ff0000;
+  background-color: #ff7b002d;
+  border-radius: 18px;
+  padding: 4px 15px;
+}
 .example{
   padding-top: 15px;
 }
@@ -122,16 +188,25 @@ input{
   font-size: 16px;
   width: 70%;
   border-radius: 4px;
-  border-color: #42b983;
+  border: 2px solid #279e68;
 }
 .history{
   border: 1px solid #9a9a9a;
   padding: 8px;
   margin: 15px 0;
+
+  h3{
+    margin-top: 0;
+  }
 }
 .endpoint{
   text-decoration: underline;
+  font-size: 14px;
   color: #0046b6;
+
+  &.para{
+    color: #212121;
+  }
 }
 .histry-url{
   cursor: pointer;
