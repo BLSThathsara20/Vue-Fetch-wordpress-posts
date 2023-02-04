@@ -1,7 +1,7 @@
 <template>
   <div>
     <input type="text" v-model="wpUrl">
-    <button @click="validateUrl">Validate URL</button>
+    <button @click="validateUrl" v-if="wpUrl">Validate URL</button>
     <ul v-for="post in posts" v-bind:key="post.id">
       <li>{{ post.title.rendered }}</li>
     </ul>
