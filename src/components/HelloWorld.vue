@@ -22,10 +22,16 @@
     </ul>
     <span class="previous-urls" v-if="wpUrl">You can click these previous urls</span>
     </div>
+
+
     <h4 v-if="posts">Post Titles</h4>
     <ul class="posts" v-for="post in posts" v-bind:key="post.id">
       <li><a href="{{ post.link }}">{{ post.title.rendered }}</a> <span>{{ post.content.rendered }}</span></li>
     </ul>
+
+
+
+    
     <br>
     <br>
   </div>
@@ -138,7 +144,7 @@ export default {
       display: block;
       padding-top: 8px;
       padding-bottom: 12px;
-
+      word-break: break-word;
     }
   }
 }
