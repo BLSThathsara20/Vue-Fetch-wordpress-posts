@@ -21,10 +21,13 @@ nav {
   a {
     font-weight: bold;
     color: #2c3e50;
+    text-decoration: none;
 
     &.router-link-exact-active {
-      color: #42b983;
-      background-color: red;
+      color: #000000;
+      background-color: #cacaca;
+      padding: 8px 25px;
+      border-radius: 18px;
     }
   }
 }
