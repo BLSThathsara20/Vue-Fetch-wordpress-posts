@@ -51,13 +51,15 @@ export default {
         .catch(error => {
           if (error.response.status === 404) {
             this.errorMessage = "Request failed with status code 404";
+            this.posts = [];
           }
         });
     },
     validateUrl() {
       let url = this.wpUrl;
       if (!url.startsWith("https://www.")) {
-        url = "https://www." + url;
+        this.errorMessage = "Invalid URL. Please add 'https://www.' in front of the URL.";
+        return;
       }
       if (url.endsWith("/")) {
         url = url.slice(0, -1);
@@ -77,6 +79,7 @@ export default {
   }
 };
 </script>
+
 
 
 
