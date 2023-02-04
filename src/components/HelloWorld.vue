@@ -38,23 +38,26 @@ export default {
   },
   methods: {
     fetchPosts(wpUrl) {
-      this.wpUrl = wpUrl;
-      axios
-        .get(wpUrl + "/wp-json/wp/v2/posts")
-        .then(response => {
-          this.posts = response.data;
-          if (!this.historyUrls.includes(wpUrl)) {
-            this.historyUrls.push(wpUrl);
-          }
-          this.errorMessage = "";
-        })
-        .catch(error => {
-          if (error.response.status === 404) {
-            this.errorMessage = "Request failed with status code 404";
-            this.posts = [];
-          }
-        });
-    },
+    if (wpUrl.endsWith("/")) {
+      wpUrl = wpUrl.slice(0, -1);
+    }
+    this.wpUrl = wpUrl;
+    axios
+      .get(wpUrl + "/wp-json/wp/v2/posts")
+      .then(response => {
+        this.posts = response.data;
+        if (!this.historyUrls.includes(wpUrl)) {
+          this.historyUrls.push(wpUrl);
+        }
+        this.errorMessage = "";
+      })
+      .catch(error => {
+        if (error.response.status === 404) {
+          this.errorMessage = "Request failed with status code 404";
+          this.posts = [];
+        }
+      });
+  },
     validateUrl() {
       let url = this.wpUrl;
       if (!url.startsWith("https://www.")) {
